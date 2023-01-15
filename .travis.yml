@@ -28,15 +28,15 @@ after_success:
   - docker push vkdahdk/docker-backend
   - docker push vkdahdk/docker-nginx
 # aws 배포
-# deploy:
-#   provider: elasticbeanstalk
-#   region: "ap-northeast-2"
-#   app: "docker-fullstack-app"
-#   env: "DockerFullstackApp-env"
-#   bucket_name: elasticbeanstalk-ap-northeast-2-972153559337
-#   bucket_path: "docker-fullstack-app"
-#   on:
-#     branch: master
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-northeast-2"
+  app: "docker-fullstack"
+  env: "Dockerfullstack-env"
+  bucket_name: elasticbeanstalk-ap-northeast-2-475881981067
+  bucket_path: "docker-fullstack"
+  on:
+    branch: main
 
-#   access_key_id: $AWS_ACCESS_KEY
-#   secret_access_key: $AWS_SECRET_ACCESS_KEY
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_ACCESS_KEY

@@ -24,9 +24,9 @@ services:
       - /app/node_modules
       - ./backend:/app
     environment:
-      MYSQL_HOST: 127.0.0.1
+      MYSQL_HOST: mysql
       MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: 2222
+      MYSQL_ROOT_PASSWORD: dnlsemtm
       MYSQL_DATABASE: myapp
       MYSQL_PORT: 3306
     # links:
