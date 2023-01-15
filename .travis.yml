@@ -1,0 +1,42 @@
+language: generic
+
+sudo: required
+
+# 도커 서비스 선언
+services:
+  - docker
+
+# 앱을 도커 환경에서 실행하고 있으니 도커 이미지 생성
+before_install:
+  - docker build -t vkdahdk/react-test-app -f ./frontend/Dockerfile.dev ./frontend
+
+# 생성된 도커 이미지 이용하여 npm test
+script:
+  - docker run -e CI=true vkdahdk/react-test-app npm run test
+
+after_success:
+  # 운영용 도커 이미지 생성
+  - docker build -t vkdahdk/docker-frontend ./frontend
+  - docker build -t vkdahdk/docker-backend ./backend
+  - docker build -t vkdahdk/docker-nginx ./nginx
+
+  # 도커 허브에 로그인
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
+
+  # 도커 허브에 이미지 푸쉬
+  - docker push vkdahdk/docker-frontend
+  - docker push vkdahdk/docker-backend
+  - docker push vkdahdk/docker-nginx
+# aws 배포
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "ap-northeast-2"
+#   app: "docker-fullstack-app"
+#   env: "DockerFullstackApp-env"
+#   bucket_name: elasticbeanstalk-ap-northeast-2-972153559337
+#   bucket_path: "docker-fullstack-app"
+#   on:
+#     branch: master
+
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_ACCESS_KEY
